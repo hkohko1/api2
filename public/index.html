@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EPUB Reader</title>
+    <!-- Load epub.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.15/epub.min.js"></script>
+  </head>
+  <body>
+    <div id="viewer" style="width: 100%; height: 100vh"></div>
+
+    <script>
+      // Wait for the window to load completely
+      window.addEventListener("load", (event) => {
+        // Check if ePub is defined
+        if (typeof ePub === "undefined") {
+          console.error("epub.js is not loaded!");
+          document.body.innerHTML =
+            "<h1>Error: epub.js library failed to load.</h1>";
+          return;
+        }
+
+        // Path to the EPUB file (change this to your correct file path or URL)
+        const bookUrl = "http://localhost:3000/ebooks/chopin-at-fault.epub"; // This should match the server path
+
+        // Initialize the ePub reader
+        const bookInstance = ePub(bookUrl);
+
+        // Render the book to the viewer
+        bookInstance.renderTo("viewer", {
+          width: "100%",
+          height: "100vh",
+        });
+
+        // Optional: Handle errors
+        bookInstance.on("error", (error) => {
+          console.error("Error loading EPUB:", error);
+          document.body.innerHTML = `<h1>Error loading EPUB: ${error.message}</h1>`;
+        });
+      });
+    </script>
+  </body>
+</html>
